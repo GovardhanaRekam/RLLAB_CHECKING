@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Verification</title>
+<style>
+     body {
+        background-color: #071168; /* Blue background color */
+        font-family: Arial, sans-serif;
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+         display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hidden {
+        display: none;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Verify Student</h2>
+    <form id="verificationForm">
+        <div id="idInput">
+            <label for="studentId">Enter Student ID:</label><br>
+            <input type="text" id="studentId" name="studentId" maxlength="7"><br><br>
+        </div>
+        
+        <button type="button" id="goButton" class="hidden">Go</button>
+    </form>
+    <div id="result" class="hidden">
+        <div id="details"></div>
+    </div>
+</div>
+
+<script>
+// JavaScript object containing ID, Name, Email, and Link
+var data = [
+{"NAME": "K Veera Sathish ", "ID NO:-": "R190481", "PHONE NO:-": 9391563089.0, "Branch": "E3", "TRANSACTION": "T2403232348069093006636", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1QftVbU_4Da-Mver-wr4rh20uhQRrevBy", "Participation Mode": "Individual"},
+{"NAME": "Thurimella Venkata Varun ", "ID NO:-": "R190830", "PHONE NO:-": 7702743919.0, "Branch": "E3", "TRANSACTION": "T2403232348073769014178", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1tBvfPlg5xnaOwlxFeu1KshAq41k-fqvm", "Participation Mode": "Individual"},
+{"NAME": "MUMMADI KAVYA", "ID NO:-": "R200728", "PHONE NO:-": 9391795732.0, "Branch": "E2", "TRANSACTION": "T2403240821125012691286", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1z9bGUcRuiWVn-o4CMPxdd3UOMZPTRASy", "Participation Mode": "Individual"},
+{"NAME": "GELIVI POTHIREDDY ", "ID NO:-": "R191023", "PHONE NO:-": 7569118920.0, "Branch": "E3", "TRANSACTION": 408446368827, "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1iMHt7EwAMEjnl_XRGFJbgHrfd9HQrJzu", "Participation Mode": "Individual"},
+{"NAME": "M.HimaBindu", "ID NO:-": "R200609", "PHONE NO:-": 9391706982.0, "Branch": "E2", "TRANSACTION": 445065333970, "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1wJszKhi16VUu-hDSUjs27me4SMgei79K", "Participation Mode": "Individual"},
+{"NAME": "V Chandana ", "ID NO:-": "R190756", "PHONE NO:-": 9676587040.0, "Branch": "E3", "TRANSACTION": "T2403241040149406991111", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1gCENuxE-EkZZMpiTAcDEnP85TwngpzhF", "Participation Mode": "Individual"},
+{"NAME": "Jampana Gangothri ", "ID NO:-": "R190863", "PHONE NO:-": 7702920317.0, "Branch": "E3", "TRANSACTION": "T2403241053392626183404", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1Ud4kqCZAPKZqtdjLwg9GdjECrdjDAnyk", "Participation Mode": "Individual"},
+{"NAME": "O.Reddy Dinesh", "ID NO:-": "R191075", "PHONE NO:-": 9441082022.0, "Branch": "E3", "TRANSACTION": "1321711260950725918", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1aWxOq_r1alSQf_RlT3XiCgZ9474jQhKi", "Participation Mode": "Individual"},
+{"NAME": "C GAYATHRI ", "ID NO:-": "R190480", "PHONE NO:-": 9121970193.0, "Branch": "E3", "TRANSACTION": "T2403241407496163006180", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1nd0BFNEvKfnh5mpL1Ll96UvPw40-cz71", "Participation Mode": "Individual"},
+{"NAME": "S Gangotri ", "ID NO:-": "R190490", "PHONE NO:-": 8639869653.0, "Branch": "E3", "TRANSACTION": 408460506790, "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1HV_LDWqK7Yj5qnnT9nxqs5mwB3CiA9ug", "Participation Mode": "Individual"},
+{"NAME": "Mukkarla Swathi", "ID NO:-": "R190975", "PHONE NO:-": 6302796630.0, "Branch": "E3", "TRANSACTION": "T2403241430486147290079", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1oPz-dM5BGfpg1MwUNb6nBE10HIPlPmf2", "Participation Mode": "Individual"},
+{"NAME": "K.Jeevan Sai", "ID NO:-": "R191063", "PHONE NO:-": 9347490125.0, "Branch": "E3", "TRANSACTION": 408422698721, "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=19dYspScTnJ7wSCGTfLFhIhV-fazqG6KH", "Participation Mode": "Individual"},
+{"NAME": "CHEEMALA SWATHI ", "ID NO:-": "R190973", "PHONE NO:-": 7036782624.0, "Branch": "E3", "TRANSACTION": "T2403241533051395012070", "PAYMENT RECIPENT LINK": "https://drive.google.com/open?id=1o_m2-hNGMhzJj94KHnS6pFP_IndQ6ieT", "Participation Mode": "Individual"}
+]
+window.onload = function() {
+    document.getElementById('studentId').value = '';
+};
+document.getElementById('studentId').addEventListener('keydown', function(event) {
+    // If Enter key is pressed (key code 13), trigger click event on Go button
+    if (event.keyCode === 13) {
+        event.preventDefault(); // Prevent form submission
+        document.getElementById('goButton').click();
+    }
+});
+document.getElementById('studentId').addEventListener('input', function() {
+    var studentId = this.value.trim();
+    if (studentId.length === 7) {
+        document.getElementById('goButton').classList.remove('hidden');
+    } else {
+        document.getElementById('goButton').classList.add('hidden');
+    }
+});
+
+document.getElementById('goButton').addEventListener('click', function() {
+    var studentId = document.getElementById('studentId').value.trim();
+    if (studentId.length === 7) {
+        fetchStudentData(studentId);
+    } else {
+        alert('Please enter a 7-digit Student ID.');
+    }
+});
+
+function fetchStudentData(studentId) {
+    var student = data.find(function(item) {
+        return item['ID NO:-'] === studentId;
+    });
+    if (!student) {
+        var oppositeCaseId = toggleCase(studentId);
+        student = data.find(function(item) {
+            return item['ID NO:-'] === oppositeCaseId;
+        });
+    }
+    // Display the result
+    if (student) {
+        displayResult(student.NAME, student['PHONE NO:-'], student['PAYMENT RECIPENT LINK'], student.Branch);
+    } else {
+        displayResult('Not found', '', '');
+    }
+}
+
+function displayResult(name, phone, link, branch) {
+    var resultContainer = document.getElementById('result');
+    resultContainer.classList.remove('hidden');
+    var detailsContainer = document.getElementById('details');
+    detailsContainer.innerHTML = '<p>Name: ' + name + '</p><p>Phone: ' + phone + '</p><p>Branch: ' + branch + '</p><p>Payment Recipient Link: <a href="' + link + '" target="_blank">' + link + '</a></p>';
+}
+
+
+function toggleCase(str) {
+    return str.split('').map(function(char) {
+        return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+    }).join('');
+}
+
+</script>
+</body>
+</html>
